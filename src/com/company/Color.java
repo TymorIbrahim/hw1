@@ -1,5 +1,5 @@
 package com.company;
 
 public enum Color {
-    Red, Blue, Green, Yellow, Orange
+    Red, Blue, Green, Yellow, Orange, NULL
 }

@@ -8,6 +8,10 @@ public class GamePiece {
         this.color = color;
         this.square = new Square(1);
     }
+    public GamePiece(){
+        this.color= Color.NULL;
+        this.square = null;
+    }
 
     public Color getColor() {
         return color;
@@ -23,5 +27,12 @@ public class GamePiece {
 
     public void setSquare(Square square) {
         this.square = square;
+    }
+
+    @Override
+    public String toString() {
+        return "GamePiece{" +
+                "color=" + color +
+                '}';
     }
 }
