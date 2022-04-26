@@ -1,15 +1,12 @@
 package com.company;
 
 public class GameBoard {
-    Square [][] gameBoard = new Square[10][10];
+    Square [] gameBoard = new Square[100];
 
     public GameBoard (){
         int counter = 1;
-        for (int i = 0; i < gameBoard.length; i++){
-            for (int j = 0; i < gameBoard.length; j++){
-                gameBoard [i][j] = new Square(counter);
-                counter++;
-            }
+        for (int i = 1; i < gameBoard.length + 1; i++){
+            gameBoard [i] = new Square(i);
         }
     }
 }
