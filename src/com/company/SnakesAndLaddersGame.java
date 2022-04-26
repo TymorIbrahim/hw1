@@ -5,13 +5,17 @@ public class SnakesAndLaddersGame {
     Player [] players = new Player[5];
     int player_count = 0;
     static String add_player = "add player ";
-    int max_num_of_players = 5;
+    GameBoard Board = new GameBoard();
+    Snake [] snakes = new Snake[100];
+    Ladder [] ladders = new Ladder[100];
 
     public SnakesAndLaddersGame (int min, int max){
+
         this.die = new Die(min, max);
     }
 
     public SnakesAndLaddersGame (){
+
         this.die = new Die();
     }
 
@@ -23,7 +27,7 @@ public class SnakesAndLaddersGame {
         return true;
     }
 
-    public String getPlayerNameFromInput (String input){
+    String getPlayerNameFromInput (String input){
         String player_name = "";
         int i = add_player.length();
         while (input.charAt(i) != ' ') {
@@ -42,7 +46,7 @@ public class SnakesAndLaddersGame {
         }
         Color color = Color.NULL;
         if (c.equals("red")){
-             color = Color.Red;
+            color = Color.Red;
         }
         if (c.equals("blue")){
             color = Color.Blue;
@@ -59,53 +63,19 @@ public class SnakesAndLaddersGame {
         return color;
     }
 
-    public boolean isLegalPlayer (Player player){
-        if (player_count >= max_num_of_players){
-            System.out.println("The maximal number of players is five !");
-            return false;
-        }
-        for (int i = 0; i < player_count; i++) {
-            if (player.getName().equals(players[i].getName())) {
-                if (player.getGamePiece().getColor().equals(players[i].getGamePiece().getColor())) {
-                    System.out.println("The name and the color are already taken!");
-                    return false;
-                } else {
-                    System.out.println("The name is already taken!");
-                    return false;
-                }
-            }
-            else if(player.getGamePiece().getColor().equals(players[i].getGamePiece().getColor())){
-                System.out.println("The color is already taken!");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public void addNewPlayer (String input){
-        String new_player_name = getPlayerNameFromInput(input);
-        Color new_player_color = getColorFromInput(input, new_player_name);
-        Player new_player = new Player(new_player_name, new_player_color);
-        if (isLegalPlayer(new_player)) {
-            System.out.println("player added");
-            players[player_count] = new_player;
-            player_count++;
-        }
-    }
-
     public void initializeGame (){
-        String input = "";
+        String input = Main.scanner.nextLine();
         while (!input.equals("end")){
-            input = Main.scanner.nextLine();
+            //System.out.println("player added 1");
             if (contains(input, add_player)){
-                addNewPlayer(input);
+                System.out.println("player added");
+                String new_player_name = getPlayerNameFromInput(input);
+                Color new_player_color = getColorFromInput(input, new_player_name);
+                Player new_player = new Player(new_player_name, new_player_color);
+                players [player_count] = new_player;
+                player_count++;
             }
-            if(input.equals("end")){
-                if (player_count < 2){
-                    System.out.println("Cannot start the game, there are less then two players!");
-                    input = "";
-                }
-            }
+            input = Main.scanner.nextLine();
         }
         if (input.equals("end")) {
             System.out.println("end of input");
@@ -116,5 +86,58 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    public void add_ladder(int length, int square_number){
+        if (square_number > 100 || square_number < 1){
+            System.out.println("The square is not within the board's boundaries!");
+            return;
+        }
+        if (square_number + length > 100) {
+            System.out.println("The ladder is too long!");
+            return;
+        }
+        if (Board.gameBoard[square_number].getFlag_for_ladder() == true){
+            System.out.println("This square already contains a bottom of a ladder!");
+            return;
+        }
+        if (Board.gameBoard[square_number].getFlag_for_snake() == true){
+            System.out.println("This square contains a head of a snake!");
+            return;
+        }
+        Board.gameBoard[square_number].setFlag_for_snake(true);
+        Board.gameBoard[square_number].setFlag_for_ladder(true);
+        int i = 0;
+        while (ladders[i].base_square != 0){
+            i++;
+        }
+        ladders[i] = new Ladder(square_number, length);
+    }
 
+    public void add_snake(int length, int square_number){
+        if (square_number > 100 || square_number < 1){
+            System.out.println("The square is not within the board's boundaries!");
+            return;
+        }
+        if (square_number - length < 0) {
+            System.out.println("The ladder is too long!");
+            return;
+        }
+        if (square_number == 100){
+            System.out.println("You cannot add a snake in the last square");
+        }
+        if (Board.gameBoard[square_number].getFlag_for_ladder() == true){
+            System.out.println("This square contains a bottom of a ladder!");
+            return;
+        }
+        if (Board.gameBoard[square_number].getFlag_for_snake() == true){
+            System.out.println("This square already contains a head of a snake!");
+            return;
+        }
+        Board.gameBoard[square_number].setFlag_for_snake(true);
+        Board.gameBoard[square_number].setFlag_for_ladder(true);
+        int i = 0;
+        while (snakes[i].head_square != 0){
+            i++;
+        }
+        snakes[i] = new Snake(square_number, length);
+    }
 }
