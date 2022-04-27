@@ -5,6 +5,8 @@ public class SnakesAndLaddersGame {
     Player [] players = new Player[5];
     int player_count = 0;
     static String add_player = "add player ";
+    static String add_ladder = "add ladder ";
+    static String add_snake = "add snake ";
     GameBoard Board = new GameBoard();
     Snake [] snakes = new Snake[100];
     Ladder [] ladders = new Ladder[100];
@@ -66,14 +68,22 @@ public class SnakesAndLaddersGame {
     public void initializeGame (){
         String input = Main.scanner.nextLine();
         while (!input.equals("end")){
-            //System.out.println("player added 1");
             if (contains(input, add_player)){
-                System.out.println("player added");
                 String new_player_name = getPlayerNameFromInput(input);
                 Color new_player_color = getColorFromInput(input, new_player_name);
                 Player new_player = new Player(new_player_name, new_player_color);
                 players [player_count] = new_player;
                 player_count++;
+            }
+            if (contains(input, add_ladder)){
+                int length = getLadder_Length(input);
+                int squareNumber = getLadder_squareNumber(input, length);
+                add_ladder(length, squareNumber);
+            }
+            if (contains(input, add_snake)){
+                int length = getSnake_Length(input);
+                int squareNumber = getLadder_squareNumber(input, length);
+                add_snake(length, squareNumber);
             }
             input = Main.scanner.nextLine();
         }
@@ -140,4 +150,57 @@ public class SnakesAndLaddersGame {
         }
         snakes[i] = new Snake(square_number, length);
     }
+
+    public int getLadder_Length (String input){
+        char c;
+        int length = 0;
+        int i = add_ladder.length();
+        while (input.charAt(i) != ' ') {
+            c = input.charAt(i);
+            length = (c - 48);
+            length *= 10;
+            i++;
+        }
+        return length /= 10;
+    }
+
+    public int getLadder_squareNumber (String input, int length){
+        int i = add_ladder.length() + length;
+        char c;
+        int squareNumber = 0;
+        while (input.charAt(i) != ' ') {
+            c = input.charAt(i);
+            squareNumber = (c - 48);
+            squareNumber *= 10;
+            i++;
+        }
+        return squareNumber /= 10;
+    }
+
+    public int getSnake_Length (String input){
+        char c;
+        int length = 0;
+        int i = add_snake.length();
+        while (input.charAt(i) != ' ') {
+            c = input.charAt(i);
+            length = (c - 48);
+            length *= 10;
+            i++;
+        }
+        return length /= 10;
+    }
+
+    public int getSnake_squareNumber (String input, int length){
+        int i = add_snake.length() + length;
+        char c;
+        int squareNumber = 0;
+        while (input.charAt(i) != ' ') {
+            c = input.charAt(i);
+            squareNumber = (c - 48);
+            squareNumber *= 10;
+            i++;
+        }
+        return squareNumber /= 10;
+    }
+
 }
