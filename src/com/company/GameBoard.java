@@ -5,8 +5,8 @@ public class GameBoard {
 
     public GameBoard (){
         int counter = 1;
-        for (int i = 1; i < gameBoard.length + 1; i++){
-            gameBoard [i] = new Square(i);
+        for (int i = 0; i < gameBoard.length; i++){
+            gameBoard [i] = new Square(i + 1);
         }
     }
 }
