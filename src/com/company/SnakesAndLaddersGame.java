@@ -40,7 +40,6 @@ public class SnakesAndLaddersGame {
         Color new_player_color = getColorFromInput(input, new_player_name);
         Player new_player = new Player(new_player_name, new_player_color);
         if (isLegalPlayer(new_player)) {
-            System.out.println("player added");
             players[player_count] = new_player;
             player_count++;
         }
@@ -54,6 +53,43 @@ public class SnakesAndLaddersGame {
     public SnakesAndLaddersGame (){
 
         this.die = new Die();
+    }
+
+
+    public void initializeGame (){
+        String input = "";
+        while (!input.equals("end")){
+            input = Main.scanner.nextLine();
+            if (contains(input, add_player)){
+                addNewPlayer(input);
+            }
+            if (contains(input, add_ladder)){
+                int length = getLadder_Length(input);
+                int squareNumber = getLadder_squareNumber(input);
+                add_ladder(length, squareNumber);
+            }
+            if (contains(input, add_snake)){
+                int length = getSnake_Length(input);
+                int squareNumber = getSnake_squareNumber(input);
+                add_snake(length, squareNumber);
+            }
+            if(input.equals("end")){
+                if (player_count < 2){
+                    System.out.println("Cannot start the game, there are less then two players!");
+                    input = "";
+                }
+            }
+        }
+        if (input.equals("end")) {
+            sort_players();
+            //System.out.println("end of input");
+            int i = 0;
+            for (i = 0; i < player_count; i++) {
+                System.out.println(players[i].getName() + "--" + players[i].getGamePiece().toString());
+            }
+//            print_ladders();
+            start();
+        }
     }
 
     public boolean contains(String input, String target){
@@ -98,40 +134,6 @@ public class SnakesAndLaddersGame {
             color = Color.Orange;
         }
         return color;
-    }
-
-    public void initializeGame (){
-        String input = "";
-        while (!input.equals("end")){
-            input = Main.scanner.nextLine();
-            if (contains(input, add_player)){
-                addNewPlayer(input);
-            }
-            if (contains(input, add_ladder)){
-                int length = getLadder_Length(input);
-                int squareNumber = getLadder_squareNumber(input);
-                add_ladder(length, squareNumber);
-            }
-            if (contains(input, add_snake)){
-                int length = getSnake_Length(input);
-                int squareNumber = getSnake_squareNumber(input);
-                add_snake(length, squareNumber);
-            }
-            if(input.equals("end")){
-                if (player_count < 2){
-                    System.out.println("Cannot start the game, there are less then two players!");
-                    input = "";
-                }
-            }
-        }
-        if (input.equals("end")) {
-            System.out.println("end of input");
-            int i = 0;
-            for (i = 0; i < player_count; i++) {
-                System.out.println(players[i].getName() + "--" + players[i].getGamePiece().toString());
-            }
-            print_ladders();
-        }
     }
 
     public void add_ladder(int length, int square_number){
@@ -201,7 +203,6 @@ public class SnakesAndLaddersGame {
             length *= 10;
             i++;
         }
-        //        System.out.println(length / 10);
         return length /= 10;
     }
 
@@ -219,7 +220,6 @@ public class SnakesAndLaddersGame {
             squareNumber *= 10;
             i++;
         }
-        //        System.out.println(squareNumber / 10);
         return squareNumber /= 10;
     }
 
@@ -233,7 +233,6 @@ public class SnakesAndLaddersGame {
             length *= 10;
             i++;
         }
-//        System.out.println(length / 10);
         return length /= 10;
     }
 
@@ -251,17 +250,31 @@ public class SnakesAndLaddersGame {
             squareNumber *= 10;
             i++;
         }
-//        System.out.println(squareNumber / 10);
         return squareNumber /= 10;
     }
 
-    public void print_ladders(){
-        for (int i = 0;i < 100; i++){
-            if(ladders[i] != null) {
-                System.out.println(ladders[i].base_square);
-                System.out.println(ladders[i].top_square);
+    public void sort_players(){
+        String temp;
+        for (int i = 0; i < player_count; i++) {
+            for (int j = i + 1; j < player_count; j++) {
+
+                // to compare one string with other strings
+                if (players[i].getName().compareTo(players[j].getName()) > 0) {
+                    // swapping
+                    Color temp_color = players[i].gamePiece.color;
+                    temp = players[i].getName();
+                    players[i].setName(players[j].getName());
+                    players[i].gamePiece.setColor(players[j].gamePiece.color);
+                    players[j].setName(temp);
+                    players[j].gamePiece.setColor(temp_color);
+                }
             }
         }
+    }
+
+    public String start(){
+
+        return " ";
     }
 
 }
