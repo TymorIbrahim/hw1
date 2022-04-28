@@ -33,17 +33,13 @@ public class Main {
             }
 
             System.out.println("Game number " + i + " starts.");
-
+            System.out.println("Initializing the game...");
             game.initializeGame();
-            //String winner = game.start();
-            //System.out.println("\n" + winner + " has won the game!");
+            String winner = game.start();
+            System.out.println("\n" + winner + " has won the game!");
             System.out.println("Game number " + i + " ended.");
             System.out.println("\n********************************************************************************\n");
         }
         System.out.println("All games are over.");
-
-        // Test two dice
-        Die die1 = new Die();
-        Die die2 = new Die(21, 3);
     }
 }

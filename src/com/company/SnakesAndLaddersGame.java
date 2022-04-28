@@ -96,10 +96,6 @@ public class SnakesAndLaddersGame {
         }
         if (input.equals("end")) {
             sort_players();
-            int i = 0;
-            for (i = 0; i < player_count; i++) {
-                System.out.println(players[i].getName() + "--" + players[i].getGamePiece().toString());
-            }
             start();
         }
     }
@@ -285,8 +281,42 @@ public class SnakesAndLaddersGame {
     }
 
     public String start(){
+        int round = 1;
+        while (true){
+            if (!checkWinner().equals(""))
+                return checkWinner();
+            System.out.println("------------------------- Round number " + round + " -------------------------");
+            for (int i = 0; i < player_count; i++){
+                int player_square_num = players[i].gamePiece.square.getNum();
+                int roll_num = die.roll(), new_square_num = checkmorethan100(roll_num, i);
+                System.out.println(players[i].getName() + " rolled " + roll_num + ". The path to the next square: " + player_square_num + " -> " + new_square_num);
+                players[i].gamePiece.square.setNum(new_square_num);
+            }
+            System.out.println();
+            System.out.println("Players positions on the board:");
+            for (int j = 0; j < player_count; j++){
+                System.out.println(players[j].getName() + " is in square number " + players[j].gamePiece.square.getNum());
+            }
+            round++;
+        }
+    }
 
-        return " ";
+    public String checkWinner(){
+        for (int i = 0; i < player_count; i++){
+            if (players[i].gamePiece.square.getNum() >= 100){
+                return players[i].getName();
+            }
+        }
+        return "";
+    }
+
+    public int checkmorethan100 (int roll_num, int index){
+        int new_square_num = players[index].gamePiece.square.getNum() + roll_num;
+        if (new_square_num <=100 )
+            return new_square_num;
+        else{
+            return  new_square_num - 2*(new_square_num % 100);
+        }
     }
 
 }
