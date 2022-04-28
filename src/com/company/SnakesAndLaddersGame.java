@@ -303,7 +303,7 @@ public class SnakesAndLaddersGame {
 
     public String checkWinner(){
         for (int i = 0; i < player_count; i++){
-            if (players[i].gamePiece.square.getNum() >= 100){
+            if (players[i].gamePiece.square.getNum() == 100){
                 return players[i].getName();
             }
         }
