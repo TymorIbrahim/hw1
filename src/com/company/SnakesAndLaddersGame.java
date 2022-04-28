@@ -10,7 +10,7 @@ public class SnakesAndLaddersGame {
     GameBoard Board = new GameBoard();
     Snake [] snakes = new Snake[100];
     Ladder [] ladders = new Ladder[100];
-    int max_num_of_players = 5;
+    final int max_num_of_players = 5;
 
     public boolean isLegalPlayer (Player player){
         if (player_count >= max_num_of_players){
