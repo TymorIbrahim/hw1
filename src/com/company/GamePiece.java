@@ -32,6 +32,14 @@ public class GamePiece {
         this.square = square;
     }
 
+    public boolean isFirst_move() {
+        return first_move;
+    }
+
+    public void setFirst_move(boolean first_move) {
+        this.first_move = first_move;
+    }
+
     @Override
     public String toString() {
         return "GamePiece{" +

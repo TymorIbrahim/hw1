@@ -89,7 +89,7 @@ public class SnakesAndLaddersGame {
             }
             if(input.equals("end")){
                 if (player_count < 2){
-                    System.out.println("Cannot start the game, there are less then two players!");
+                    System.out.println("Cannot start the game, there are less than two players!");
                     input = "";
                 }
             }
@@ -280,23 +280,26 @@ public class SnakesAndLaddersGame {
             System.out.println("------------------------- Round number " + round + " -------------------------");
             for (int i = 0; i < player_count; i++){
                 int player_square_num = players[i].gamePiece.square.getNum();
-                //int roll_num = die.roll();
-                int roll_num = Main.scanner.nextInt();
+                int roll_num = die.roll();
                 int new_square_num = checkmorethan100(roll_num, i);
-
+                if (new_square_num < 1){
+                    new_square_num = 1;
+                }
                 System.out.print(players[i].getName() + " rolled " + roll_num + ". The path to the next square: " + player_square_num);
                 System.out.print(" -> " + new_square_num);
                 players[i].gamePiece.square.setNum(new_square_num);
-                while ((checkLadderAndMove(new_square_num) != -1) || (checkSnakeAndMove(new_square_num) != -1)){
-                    if (checkLadderAndMove(new_square_num) != -1)
-                        new_square_num = checkLadderAndMove(new_square_num);
+                while ((checkLadderAndMove(new_square_num, i) != -1) || (checkSnakeAndMove(new_square_num) != -1)){
+                    if (checkLadderAndMove(new_square_num, i) != -1)
+                        new_square_num = checkLadderAndMove(new_square_num, i);
                     else
                         new_square_num = checkSnakeAndMove(new_square_num);
                     players[i].gamePiece.square.setNum(new_square_num);
                     System.out.print(" -> " + new_square_num);
                 }
                 System.out.println();
-
+                players[i].gamePiece.setFirst_move(true);
+                if (new_square_num == 100)
+                    break;
             }
             System.out.println();
             System.out.println("Players positions on the board:");
@@ -325,7 +328,9 @@ public class SnakesAndLaddersGame {
         }
     }
 
-    public int checkLadderAndMove(int new_square_num){
+    public int checkLadderAndMove(int new_square_num, int index){
+        if (new_square_num - 1  == 1 && Board.gameBoard[new_square_num - 1].flag_for_ladder && players[index].gamePiece.isFirst_move())
+            return ladders[new_square_num - 1].top_square + 1;
         if (Board.gameBoard[new_square_num - 1].flag_for_ladder){
             return ladders[new_square_num - 1].top_square + 1;
         }
