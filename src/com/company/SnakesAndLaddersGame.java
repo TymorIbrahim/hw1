@@ -17,20 +17,34 @@ public class SnakesAndLaddersGame {
             System.out.println("The maximal number of players is five !");
             return false;
         }
-        for (int i = 0; i < player_count; i++) {
-            if (player.getName().equals(players[i].getName())) {
-                if (player.getGamePiece().getColor().equals(players[i].getGamePiece().getColor())) {
-                    System.out.println("The name and the color are already taken!");
-                    return false;
-                } else {
-                    System.out.println("The name is already taken!");
-                    return false;
-                }
-            }
-            else if(player.getGamePiece().getColor().equals(players[i].getGamePiece().getColor())){
-                System.out.println("The color is already taken!");
+        if (!checkPlayersNames(player.getName())) {
+            if (!checkPlayersColors(player.gamePiece.getColor())) {
+                System.out.println("The name and the color are already taken!");
+                return false;
+            } else {
+                System.out.println("The name is already taken!");
                 return false;
             }
+        }
+        if(!checkPlayersColors(player.gamePiece.getColor())){
+            System.out.println("The color is already taken!");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkPlayersColors (Color color){
+        for (int i = 0; i < player_count; i++){
+            if (players[i].gamePiece.getColor().equals(color))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean checkPlayersNames (String name){
+        for (int i = 0; i < player_count; i++){
+            if (players[i].getName().equals(name))
+                return false;
         }
         return true;
     }
@@ -82,12 +96,10 @@ public class SnakesAndLaddersGame {
         }
         if (input.equals("end")) {
             sort_players();
-            //System.out.println("end of input");
             int i = 0;
             for (i = 0; i < player_count; i++) {
                 System.out.println(players[i].getName() + "--" + players[i].getGamePiece().toString());
             }
-//            print_ladders();
             start();
         }
     }
