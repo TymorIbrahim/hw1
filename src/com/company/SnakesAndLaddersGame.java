@@ -78,13 +78,13 @@ public class SnakesAndLaddersGame {
                 addNewPlayer(input);
             }
             if (contains(input, add_ladder)){
-                int length = getLadder_Length(input);
-                int squareNumber = getLadder_squareNumber(input);
+                int length = get_Length(input, add_ladder);
+                int squareNumber = get_squareNumber(input);
                 add_ladder(length, squareNumber);
             }
             if (contains(input, add_snake)){
-                int length = getSnake_Length(input);
-                int squareNumber = getSnake_squareNumber(input);
+                int length = get_Length(input, add_snake);
+                int squareNumber = get_squareNumber(input);
                 add_snake(length, squareNumber);
             }
             if(input.equals("end")){
@@ -94,7 +94,7 @@ public class SnakesAndLaddersGame {
                 }
             }
         }
-        if (input.equals("end")) {
+        if (input == "end") {
             sort_players();
             start();
         }
@@ -193,20 +193,31 @@ public class SnakesAndLaddersGame {
         }
     }
 
-    public int getLadder_Length (String input){
+    /**
+     * This function extract the length of the ladder/snake from the input.
+     * @param input
+     * @param description
+     * @return the length of the ladder/snake.
+     */
+    public int get_Length (String input, String description){
         char c;
         int length = 0;
-        int i = add_ladder.length();
+        int i = description.length();
         while (input.charAt(i) != ' ') {
             c = input.charAt(i);
             length += (c - 48);
             length *= 10;
             i++;
         }
-        return length /= 10;
+        return length / 10;
     }
 
-    public int getLadder_squareNumber (String input){
+    /**
+     * This function extract the square number from the input.
+     * @param input
+     * @return the square number.
+     */
+    public int get_squareNumber (String input){
         int i = input.length() - 1;
         while(input.charAt(i) != ' '){
             i--;
@@ -220,39 +231,12 @@ public class SnakesAndLaddersGame {
             squareNumber *= 10;
             i++;
         }
-        return squareNumber /= 10;
+        return squareNumber / 10;
     }
 
-    public int getSnake_Length (String input){
-        char c;
-        int length = 0;
-        int i = add_snake.length();
-        while (input.charAt(i) != ' ') {
-            c = input.charAt(i);
-            length += (c - 48);
-            length *= 10;
-            i++;
-        }
-        return length /= 10;
-    }
-
-    public int getSnake_squareNumber (String input){
-        int i = input.length() - 1;
-        while(input.charAt(i) != ' '){
-            i--;
-        }
-        i++;
-        char c;
-        int squareNumber = 0;
-        while (i < input.length()) {
-            c = input.charAt(i);
-            squareNumber += (c - 48);
-            squareNumber *= 10;
-            i++;
-        }
-        return squareNumber /= 10;
-    }
-
+    /**
+     * This function sort the player alphabetically by their name.
+     */
     public void sort_players(){
         String temp;
         for (int i = 0; i < player_count; i++) {
@@ -272,6 +256,11 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    /**
+     * This function player the game, so she roll the dice for the player and do the calculation, move the player and prints his movement
+     * and finally prints and player positions.
+     * @return the winner name.
+     */
     public String start(){
         int round = 1;
         while (true){
@@ -282,12 +271,14 @@ public class SnakesAndLaddersGame {
                 int player_square_num = players[i].gamePiece.square.getNum();
                 int roll_num = die.roll();
                 int new_square_num = checkmorethan100(roll_num, i);
+                // if the new square number less than zero make the player move to square 1.
                 if (new_square_num < 1){
                     new_square_num = 1;
                 }
                 System.out.print(players[i].getName() + " rolled " + roll_num + ". The path to the next square: " + player_square_num);
                 System.out.print(" -> " + new_square_num);
                 players[i].gamePiece.square.setNum(new_square_num);
+                // check if there is any ladder or snake and make the moves, and print the movements.
                 while ((checkLadderAndMove(new_square_num, i) != -1) || (checkSnakeAndMove(new_square_num) != -1)){
                     if (checkLadderAndMove(new_square_num, i) != -1)
                         new_square_num = checkLadderAndMove(new_square_num, i);
@@ -298,6 +289,7 @@ public class SnakesAndLaddersGame {
                 }
                 System.out.println();
                 players[i].gamePiece.setFirst_move(true);
+                // if there is any player make his way to the 100 there is no need to continue.
                 if (new_square_num == 100)
                     break;
             }
@@ -310,6 +302,10 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    /**
+     * This function check if there is any winner in the game.
+     * @return the name of the winner.
+     */
     public String checkWinner(){
         for (int i = 0; i < player_count; i++){
             if (players[i].gamePiece.square.getNum() == 100){
@@ -319,6 +315,12 @@ public class SnakesAndLaddersGame {
         return "";
     }
 
+    /**
+     * This function do the calculation for the player after he rolled the dice so how much should he move.
+     * @param roll_num
+     * @param index
+     * @return the new square number that the player should go to.
+     */
     public int checkmorethan100 (int roll_num, int index){
         int new_square_num = players[index].gamePiece.square.getNum() + roll_num;
         if (new_square_num <=100 )
@@ -328,7 +330,15 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    /**
+     * This function check if the new square that the player want to move to is a bottom of ladder, and check if the ladder was in the
+     * first square if he can climb on it.
+     * @param new_square_num
+     * @param index
+     * @return where should the player go (if there is a ladder, to the tail) or return -1 if there is not a ladder.
+     */
     public int checkLadderAndMove(int new_square_num, int index){
+        // if the ladder was in the first square and the game piece of the player was moved before he can climb the ladder.
         if (new_square_num - 1  == 1 && Board.gameBoard[new_square_num - 1].flag_for_ladder && players[index].gamePiece.isFirst_move())
             return ladders[new_square_num - 1].top_square + 1;
         if (Board.gameBoard[new_square_num - 1].flag_for_ladder){
@@ -337,6 +347,12 @@ public class SnakesAndLaddersGame {
         return -1;
     }
 
+
+    /**
+     * This function check if the new square that the player want to move to is a head of snake.
+     * @param new_square_num
+     * @return the where should the player go (if there is a snake, to the tail) or return -1 if there is not a snake.
+     */
     public int checkSnakeAndMove(int new_square_num){
         if (Board.gameBoard[new_square_num - 1].flag_for_snake){
             return snakes[new_square_num - 1].tail_square + 1;
