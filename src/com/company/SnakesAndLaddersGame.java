@@ -3,6 +3,7 @@ package com.company;
 public class SnakesAndLaddersGame {
     Die die;
     Player [] players = new Player[5];
+    // count the number of players that added.
     int player_count = 0;
     static String add_player = "add player ";
     static String add_ladder = "add ladder ";
@@ -12,6 +13,12 @@ public class SnakesAndLaddersGame {
     Ladder [] ladders = new Ladder[100];
     final int max_num_of_players = 5;
 
+    /**
+     * This function if legal to add the player, she check all the situations, the colors, the names, the players number.
+     * and print the right message.
+     * @param player
+     * @return false if not legal to add the player, else true.
+     */
     public boolean isLegalPlayer (Player player){
         if (player_count >= max_num_of_players){
             System.out.println("The maximal number of players is five !");
@@ -33,6 +40,11 @@ public class SnakesAndLaddersGame {
         return true;
     }
 
+    /**
+     * This function check if the color is a color that used before.
+     * @param color
+     * @return false if the color used before, else true.
+     */
     public boolean checkPlayersColors (Color color){
         for (int i = 0; i < player_count; i++){
             if (players[i].gamePiece.getColor().equals(color))
@@ -41,6 +53,11 @@ public class SnakesAndLaddersGame {
         return true;
     }
 
+    /**
+     * This function check if the name is a name that used before.
+     * @param name
+     * @return false if the name used before, else true.
+     */
     public boolean checkPlayersNames (String name){
         for (int i = 0; i < player_count; i++){
             if (players[i].getName().equals(name))
@@ -49,6 +66,10 @@ public class SnakesAndLaddersGame {
         return true;
     }
 
+    /**
+     * This function add a player if legal to the list of players.
+     * @param input
+     */
     public void addNewPlayer (String input){
         String new_player_name = getPlayerNameFromInput(input);
         Color new_player_color = getColorFromInput(input, new_player_name);
@@ -59,17 +80,28 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    /**
+     * Construction.
+     * @param min
+     * @param max
+     */
     public SnakesAndLaddersGame (int min, int max){
 
         this.die = new Die(min, max);
     }
 
+    /**
+     * Construction. (for the default situation)
+     */
     public SnakesAndLaddersGame (){
 
         this.die = new Die();
     }
 
-
+    /**
+     * This function gets all the input from the player until he put end, and start the game after getting
+     * the input.
+     */
     public void initializeGame (){
         String input = "";
         while (!input.equals("end")){
@@ -95,11 +127,16 @@ public class SnakesAndLaddersGame {
             }
         }
         if (input == "end") {
-            sort_players();
             start();
         }
     }
 
+    /**
+     * This function check if the input contain the target.
+     * @param input
+     * @param target
+     * @return true if input contain target, else false.
+     */
     public boolean contains(String input, String target){
         for (int i = 0; i < target.length(); i++){
             if (input.charAt(i) != target.charAt(i))
@@ -108,6 +145,11 @@ public class SnakesAndLaddersGame {
         return true;
     }
 
+    /**
+     * This function extract the name of the player from the input.
+     * @param input
+     * @return the name of the player.
+     */
     String getPlayerNameFromInput (String input){
         String player_name = "";
         int i = add_player.length();
@@ -118,6 +160,12 @@ public class SnakesAndLaddersGame {
         return player_name;
     }
 
+    /**
+     * This function extract the color from the input.
+     * @param input
+     * @param name
+     * @return the name of the color.
+     */
     public Color getColorFromInput (String input, String name){
         String c = "";
         int i = add_player.length() + name.length() + 1;
@@ -144,6 +192,12 @@ public class SnakesAndLaddersGame {
         return color;
     }
 
+    /**
+     * This function check the situation of the ladder that will be added, and print the right message if he can't add it
+     * or add the ladder if he can.
+     * @param length
+     * @param square_number
+     */
     public void add_ladder(int length, int square_number){
         if (square_number > 100 || square_number < 1){
             System.out.println("The square is not within the board's boundaries!");
@@ -167,6 +221,12 @@ public class SnakesAndLaddersGame {
         }
     }
 
+    /**
+     * This function check the situation of the snake that will be added, and print the right message if he can't add it
+     * or add the snake if he can.
+     * @param length
+     * @param square_number
+     */
     public void add_snake(int length, int square_number){
         if (square_number > 100 || square_number < 1){
             System.out.println("The square is not within the board's boundaries!");
@@ -263,6 +323,7 @@ public class SnakesAndLaddersGame {
      */
     public String start(){
         int round = 1;
+        sort_players();
         while (true){
             if (!checkWinner().equals(""))
                 return checkWinner();

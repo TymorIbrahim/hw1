@@ -4,14 +4,14 @@ public class Ladder {
     int base_square;
     int top_square;
 
+    /**
+     * Construction.
+     * @param base
+     * @param length
+     */
     public Ladder (int base, int length){
         this.base_square = base;
         this.top_square = base + length;
-    }
-
-    public Ladder(){
-        this.base_square = 0;
-        this.top_square = 0;
     }
 
     public int getBase_square() {

@@ -4,6 +4,11 @@ public class Player {
     String name;
     GamePiece gamePiece;
 
+    /**
+     * Construction.
+     * @param name
+     * @param color
+     */
     public Player (String name, Color color){
         this.name = name;
         this.gamePiece = new GamePiece(color);

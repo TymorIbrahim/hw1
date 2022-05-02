@@ -5,6 +5,10 @@ public class Square {
     boolean flag_for_ladder;
     boolean flag_for_snake;
 
+    /**
+     * Construction.
+     * @param num
+     */
     public Square (int num){
         this.num = num;
         this.flag_for_ladder = false;
@@ -33,11 +37,5 @@ public class Square {
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public boolean equals (Square square){
-        if (this.num == square.num)
-            return true;
-        else return false;
     }
 }

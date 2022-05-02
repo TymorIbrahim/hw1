@@ -4,14 +4,14 @@ public class Snake {
     int head_square;
     int tail_square;
 
+    /**
+     * Construction.
+     * @param head
+     * @param length
+     */
     public Snake (int head, int length){
         this.head_square = head;
         this.tail_square = head - length;
-    }
-
-    public Snake(){
-        this.tail_square = 0;
-        this.head_square = 0;
     }
 
     public int getHead_square() {

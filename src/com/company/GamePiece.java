@@ -5,14 +5,13 @@ public class GamePiece {
     Square square;
     boolean first_move;
 
+    /**
+     * Construction.
+     * @param color
+     */
     public GamePiece (Color color){
         this.color = color;
         this.square = new Square(1);
-        this.first_move = false;
-    }
-    public GamePiece(){
-        this.color= Color.NULL;
-        this.square = null;
         this.first_move = false;
     }
 
@@ -38,12 +37,5 @@ public class GamePiece {
 
     public void setFirst_move(boolean first_move) {
         this.first_move = first_move;
-    }
-
-    @Override
-    public String toString() {
-        return "GamePiece{" +
-                "color=" + color +
-                '}';
     }
 }
